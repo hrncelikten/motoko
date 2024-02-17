@@ -51,4 +51,16 @@ actor Assistant {
     todos := Map.mapFilter<Nat, ToDo, ToDo>(todos, Nat.equal, natHash, 
               func(_, todo) { if (todo.completed) null else ?todo });
   };
+    public func deleteTodo(id: Nat) : async () {
+    ignore do ? {
+      todos.remove(id);
+    }
+  };
+  public query func searchTodos(keyword: Text) : async [ToDo] {
+  Map.mapFilter(todos, Nat.equal, natHash, func(todo) {
+    Text.contains(todo.description, keyword)
+  });
+};
+
 }
+
